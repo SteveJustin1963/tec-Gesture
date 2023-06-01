@@ -1,0 +1,81 @@
+# import necessary libraries
+import Wire, paj7620, LiquidCrystal_I2C
+
+# initialize LCD with given I2C address and size
+lcd = initialize LCD at address 0x27 with size 16x2
+
+# define gesture recognition timings
+GESTURE_REACTION_TIME = 300
+GESTURE_ENTRY_TIME = 500
+GESTURE_QUIT_TIME = 1000
+
+def setup():
+    # initialize LCD and turn on backlight
+    initialize LCD
+    turn on LCD backlight
+    initialize serial communication with baud rate 9600
+
+    print "PAJ7620U2 TEST DEMO: Recognize 9 gestures."
+
+    set LCD cursor at position (0, 0)
+    print "Gesture Recognition" on LCD
+
+    delay for 4 seconds
+
+    error = initialize paj7620 registers
+    if there's an error:
+        print "INIT ERROR,CODE:" and error code on both serial and LCD
+        delay for 3 seconds
+    else:
+        print "INIT OK" on both serial and LCD
+        delay for 3 seconds
+
+    print "Please input your gestures:\n"
+    print "Input Your Gestures" on LCD
+    delay for 3 seconds
+
+
+def main_loop():
+    while True:
+        data, data1, error = 0, 0, 0
+
+        error = read gesture data from paj7620 register at 0x43
+        if no error:
+            switch case based on data:
+
+                case GES_RIGHT_FLAG, GES_LEFT_FLAG, GES_UP_FLAG, GES_DOWN_FLAG:
+                    delay for GESTURE_ENTRY_TIME
+                    read new data from paj7620 register at 0x43
+                    if new data is GES_FORWARD_FLAG:
+                        print "Forward" on both serial and LCD
+                        delay for GESTURE_QUIT_TIME
+                    else if new data is GES_BACKWARD_FLAG:
+                        print "Backward" on both serial and LCD
+                        delay for GESTURE_QUIT_TIME
+                    else:
+                        print gesture direction (right, left, up, down) on both serial and LCD
+
+                case GES_FORWARD_FLAG:
+                    print "Forward" on both serial and LCD
+                    delay for GESTURE_QUIT_TIME
+
+                case GES_BACKWARD_FLAG:
+                    print "Backward" on both serial and LCD
+                    delay for GESTURE_QUIT_TIME
+
+                case GES_CLOCKWISE_FLAG:
+                    print "Clockwise" on both serial and LCD
+
+                case GES_COUNT_CLOCKWISE_FLAG:
+                    print "Anti-Clockwise" on both serial and LCD
+
+                default:
+                    read gesture data from paj7620 register at 0x44
+                    if gesture data is GES_WAVE_FLAG:
+                        print "Wave" on both serial and LCD
+
+        delay for 100ms
+
+# main program
+setup()
+main_loop()
