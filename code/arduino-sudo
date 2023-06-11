@@ -86,26 +86,19 @@ main_loop()
 The code you provided is an example of how to use the PAJ7620 gesture recognition sensor with an Arduino and an LCD display. Here's a breakdown of how the code works:
 
 1. The necessary libraries, including Wire.h, paj7620.h, and LiquidCrystal_I2C.h, are included at the beginning of the code.
-
 2. The LCD display is initialized with the appropriate settings.
-
 3. The PAJ7620 sensor is initialized by calling the `paj7620Init()` function. If there is an error during initialization, an error message is displayed on the LCD screen.
-
 4. After successful initialization, a message is displayed on the LCD screen, indicating that the initialization was successful.
-
 5. The `loop()` function is where the gesture recognition is performed continuously.
-
 6. Inside the loop, the `paj7620ReadReg()` function is used to read the gesture result from the sensor.
-
-7. Depending on the detected gesture, different actions are taken. For example, if a right gesture is detected, the code checks if it is followed by a forward or backward gesture. If so, it displays the appropriate message on the LCD screen. Otherwise, it displays "Right" on the LCD screen.
-
+7. Depending on the detected gesture, different actions are taken. For example, if a right gesture is detected, the code checks if it is followed by a forward or backward gesture. 
+If so, it displays the appropriate message on the LCD screen. Otherwise, it displays "Right" on the LCD screen.
 8. Similar checks and actions are performed for other gestures such as left, up, down, forward, backward, clockwise, counterclockwise, and wave.
-
 9. The `delay()` function is used to control the timing of displaying the gesture recognition results on the LCD screen.
-
 10. The loop continues indefinitely, and the gestures are continuously monitored.
 
-Make sure you have the necessary libraries installed and the connections between the Arduino, PAJ7620 sensor, and LCD display correctly established. Also, ensure that the correct I2C address is used for the LCD display (0x27 in this case) and adjust it if necessary.
+Make sure you have the necessary libraries installed and the connections between the Arduino, PAJ7620 sensor, and LCD display correctly established. 
+Also, ensure that the correct I2C address is used for the LCD display (0x27 in this case) and adjust it if necessary.
 
 Note that the code assumes that you have already obtained and included the `paj7620.h` library, which contains the necessary definitions and functions for interacting with the PAJ7620 sensor.
 
