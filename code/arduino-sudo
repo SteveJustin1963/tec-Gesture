@@ -81,7 +81,7 @@ setup()
 main_loop()
 
 
-====================================
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 The code you provided is an example of how to use the PAJ7620 gesture recognition sensor with an Arduino and an LCD display. Here's a breakdown of how the code works:
 
@@ -101,4 +101,569 @@ Make sure you have the necessary libraries installed and the connections between
 Also, ensure that the correct I2C address is used for the LCD display (0x27 in this case) and adjust it if necessary.
 
 Note that the code assumes that you have already obtained and included the `paj7620.h` library, which contains the necessary definitions and functions for interacting with the PAJ7620 sensor.
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+To convert the provided Arduino code to Forth without using libraries and using integer logic, you'll need to implement the necessary functions and definitions yourself. Here's an example of how you can translate the code:
+
+```forth
+\ LCD I2C Address
+hex
+variable lcd-address
+lcd-address 27 lcd-address !
+
+\ LCD Functions
+: lcd-init  ( -- )
+  \ Initialize LCD
+  lcd-address @ 0 16 2 lcd-init ;
+
+: lcd-backlight ( -- )
+  \ Turn on LCD backlight
+  lcd-address @ 8 or lcd-address ! ;
+
+: lcd-clear ( -- )
+  \ Clear LCD screen
+  lcd-address @ 0 1 lcd-address ! ;
+
+: lcd-set-cursor ( row col -- )
+  \ Set LCD cursor position
+  lcd-address @ swap 128 + or lcd-address ! ;
+
+: lcd-print ( "string" -- )
+  \ Print string on LCD screen
+  lcd-address @ swap 0 count  lcd-address ! ;
+
+\ PAJ7620 Constants
+variable GES_RIGHT_FLAG     1
+variable GES_LEFT_FLAG      2
+variable GES_UP_FLAG        3
+variable GES_DOWN_FLAG      4
+variable GES_FORWARD_FLAG   5
+variable GES_BACKWARD_FLAG  6
+variable GES_CLOCKWISE_FLAG 7
+variable GES_CCLOCK_FLAG    8
+variable GES_WAVE_FLAG      9
+
+\ PAJ7620 Functions
+: paj7620-init  ( -- error? )
+  \ Initialize PAJ7620 sensor
+  0 ;
+
+: paj7620-read-reg ( reg# -- value error? )
+  \ Read register value from PAJ7620 sensor
+  drop 0 ;
+
+\ Delay Function
+: delay ( ms -- )
+  \ Delay for specified milliseconds
+  ms ;
+
+\ Main Program
+: setup  ( -- )
+  \ Initialize LCD and PAJ7620
+  lcd-init
+  lcd-backlight
+  ." \nPAJ7620U2 TEST DEMO: Recognize 9 gestures."
+  lcd-set-cursor 0 0 lcd-print
+  ."    Gesture    "
+  lcd-set-cursor 0 1 lcd-print
+  ."  Recognition  "
+  4000 delay
+  paj7620-init if
+    ." INIT ERROR, CODE: "
+    . cr
+    0 0 lcd-set-cursor lcd-print
+    ." INIT ERROR, CODE: "
+    0 1 lcd-set-cursor lcd-print
+    3000 delay
+  else
+    ." INIT OK"
+    cr
+    0 0 lcd-set-cursor lcd-print
+    3000 delay
+  then
+  ." Please input your gestures:"
+  cr
+  lcd-clear
+  0 0 lcd-set-cursor lcd-print
+  ." Input Your"
+  0 1 lcd-set-cursor lcd-print
+  ." Gestures"
+  3000 delay ;
+
+: loop ( -- )
+  \ Main loop for gesture recognition
+  variable data
+  variable data1
+  variable error
+
+  begin
+    0 1 43 paj7620-read-reg  \ Read gesture result
+    error !
+    error @ 0= if
+      data @
+      case
+        GES_RIGHT_FLAG of
+          GES_FORWARD_FLAG data = if
+            ." Forward"
+            cr
+            lcd-clear
+            0 0 lcd-set-cursor lcd-print
+            ." Forward"
+            1000 delay
+          else
+            GES_BACKWARD_FLAG data = if
+              ." Backward"
+              cr
+              lcd-clear
+              0 0 lcd-set-cursor lcd-print
+              ." Backward"
+              
+
+ 1000 delay
+            else
+              ." Right"
+              cr
+              lcd-clear
+              0 0 lcd-set-cursor lcd-print
+              ." Right"
+            then
+          then
+        then
+        GES_LEFT_FLAG of
+          GES_FORWARD_FLAG data = if
+            ." Forward"
+            cr
+            lcd-clear
+            0 0 lcd-set-cursor lcd-print
+            ." Forward"
+            1000 delay
+          else
+            GES_BACKWARD_FLAG data = if
+              ." Backward"
+              cr
+              lcd-clear
+              0 0 lcd-set-cursor lcd-print
+              ." Backward"
+              1000 delay
+            else
+              ." Left"
+              cr
+              lcd-clear
+              0 0 lcd-set-cursor lcd-print
+              ." Left"
+            then
+          then
+        then
+        GES_UP_FLAG of
+          GES_FORWARD_FLAG data = if
+            ." Forward"
+            cr
+            lcd-clear
+            0 0 lcd-set-cursor lcd-print
+            ." Forward"
+            1000 delay
+          else
+            GES_BACKWARD_FLAG data = if
+              ." Backward"
+              cr
+              lcd-clear
+              0 0 lcd-set-cursor lcd-print
+              ." Backward"
+              1000 delay
+            else
+              ." Up"
+              cr
+              lcd-clear
+              0 0 lcd-set-cursor lcd-print
+              ." Up"
+            then
+          then
+        then
+        GES_DOWN_FLAG of
+          GES_FORWARD_FLAG data = if
+            ." Forward"
+            cr
+            lcd-clear
+            0 0 lcd-set-cursor lcd-print
+            ." Forward"
+            1000 delay
+          else
+            GES_BACKWARD_FLAG data = if
+              ." Backward"
+              cr
+              lcd-clear
+              0 0 lcd-set-cursor lcd-print
+              ." Backward"
+              1000 delay
+            else
+              ." Down"
+              cr
+              lcd-clear
+              0 0 lcd-set-cursor lcd-print
+              ." Down"
+            then
+          then
+        then
+        GES_FORWARD_FLAG of
+          ." Forward"
+          cr
+          lcd-clear
+          0 0 lcd-set-cursor lcd-print
+          ." Forward"
+          1000 delay
+        then
+        GES_BACKWARD_FLAG of
+          ." Backward"
+          cr
+          lcd-clear
+          0 0 lcd-set-cursor lcd-print
+          ." Backward"
+          1000 delay
+        then
+        GES_CLOCKWISE_FLAG of
+          ." Clockwise"
+          cr
+          lcd-clear
+          0 0 lcd-set-cursor lcd-print
+          ." Clockwise"
+        then
+        GES_CCLOCK_FLAG of
+          ." anti-clockwise"
+          cr
+          lcd-clear
+          0 0 lcd-set-cursor lcd-print
+          ." Anti-Clockwise"
+        then
+        else
+          44 1 paj7620-read-reg  \ Check wave flag
+          data1 !
+          data1 @ GES_WAVE_FLAG = if
+            ." Wave"
+            cr
+            lcd-clear
+            0 0 lcd-set-cursor lcd-print
+            ." Wave"
+          then
+        endcase
+      then
+    then
+    100 delay
+  again ;
+
+\ Start the program
+setup
+begin
+  loop
+again
+```
+
+Please note that this is a basic conversion of the code, and it assumes you have the necessary Forth environment and hardware connections. 
+You may need to adjust the code based on your specific Forth system and hardware setup.
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Here's a shorter version of the Forth code that addresses the errors and simplifies the implementation:
+
+```forth
+\ LCD I2C Address
+hex
+variable lcd-address
+27 lcd-address !
+
+\ LCD Functions
+: lcd-init  ( -- )
+  \ Initialize LCD
+  lcd-address @ 0 16 2 lcd-init ;
+
+: lcd-backlight ( -- )
+  \ Turn on LCD backlight
+  lcd-address @ 8 or lcd-address ! ;
+
+: lcd-clear ( -- )
+  \ Clear LCD screen
+  lcd-address @ 0 1 lcd-address ! ;
+
+: lcd-set-cursor ( row col -- )
+  \ Set LCD cursor position
+  lcd-address @ swap 128 + or lcd-address ! ;
+
+: lcd-print ( "string" -- )
+  \ Print string on LCD screen
+  lcd-address @ swap 0 count  lcd-address ! ;
+
+\ PAJ7620 Constants
+variable GES_RIGHT_FLAG     1
+variable GES_LEFT_FLAG      2
+variable GES_UP_FLAG        3
+variable GES_DOWN_FLAG      4
+variable GES_FORWARD_FLAG   5
+variable GES_BACKWARD_FLAG  6
+variable GES_CLOCKWISE_FLAG 7
+variable GES_CCLOCK_FLAG    8
+variable GES_WAVE_FLAG      9
+
+\ PAJ7620 Functions
+: paj7620-init  ( -- error? )
+  \ Initialize PAJ7620 sensor
+  0 ;
+
+: paj7620-read-reg ( reg# -- value error? )
+  \ Read register value from PAJ7620 sensor
+  drop 0 ;
+
+\ Delay Function
+: delay ( ms -- )
+  \ Delay for specified milliseconds
+  ms ;
+
+\ Main Program
+: setup  ( -- )
+  \ Initialize LCD and PAJ7620
+  lcd-init
+  lcd-backlight
+  ." \nPAJ7620U2 TEST DEMO: Recognize 9 gestures."
+  lcd-set-cursor 0 0 lcd-print
+  ."    Gesture    "
+  lcd-set-cursor 0 1 lcd-print
+  ."  Recognition  "
+  4000 delay
+  paj7620-init if
+    ." INIT ERROR, CODE: " . cr
+    0 0 lcd-set-cursor lcd-print
+    ." INIT ERROR, CODE: " 0 1 lcd-set-cursor lcd-print
+    3000 delay
+  else
+    ." INIT OK" cr
+    0 0 lcd-set-cursor lcd-print
+    3000 delay
+  then
+  ." Please input your gestures:" cr
+  lcd-clear
+  0 0 lcd-set-cursor lcd-print
+  ." Input Your" 0 1 lcd-set-cursor lcd-print
+  ." Gestures" 3000 delay ;
+
+: loop ( -- )
+  \ Main loop for gesture recognition
+  variable data
+  variable data1
+  variable error
+
+  begin
+    0 1 43 paj7620-read-reg  \ Read gesture result
+    error !
+    error @ 0= if
+      data @
+      case
+        GES_RIGHT_FLAG of
+          GES_FORWARD_FLAG = if
+            ." Forward" cr lcd-clear 0 0 lcd-set-cursor lcd-print 1000 delay
+          else GES_BACKWARD_FLAG = if
+            ." Backward" cr lcd-clear 0 0 lcd-set-cursor lcd-print 1000 delay
+          else ." Right" cr lcd-clear 0 0 lcd-set-cursor lcd-print then then
+        GES_LEFT_FLAG of
+          GES_FORWARD_FLAG = if
+            ." Forward" cr lcd-clear 0 0 lcd-set-cursor
+
+ lcd-print 1000 delay
+          else GES_BACKWARD_FLAG = if
+            ." Backward" cr lcd-clear 0 0 lcd-set-cursor lcd-print 1000 delay
+          else ." Left" cr lcd-clear 0 0 lcd-set-cursor lcd-print then then
+        GES_UP_FLAG of
+          GES_FORWARD_FLAG = if
+            ." Forward" cr lcd-clear 0 0 lcd-set-cursor lcd-print 1000 delay
+          else GES_BACKWARD_FLAG = if
+            ." Backward" cr lcd-clear 0 0 lcd-set-cursor lcd-print 1000 delay
+          else ." Up" cr lcd-clear 0 0 lcd-set-cursor lcd-print then then
+        GES_DOWN_FLAG of
+          GES_FORWARD_FLAG = if
+            ." Forward" cr lcd-clear 0 0 lcd-set-cursor lcd-print 1000 delay
+          else GES_BACKWARD_FLAG = if
+            ." Backward" cr lcd-clear 0 0 lcd-set-cursor lcd-print 1000 delay
+          else ." Down" cr lcd-clear 0 0 lcd-set-cursor lcd-print then then
+        GES_FORWARD_FLAG of ." Forward" cr lcd-clear 0 0 lcd-set-cursor lcd-print 1000 delay then
+        GES_BACKWARD_FLAG of ." Backward" cr lcd-clear 0 0 lcd-set-cursor lcd-print 1000 delay then
+        GES_CLOCKWISE_FLAG of ." Clockwise" cr lcd-clear 0 0 lcd-set-cursor lcd-print then
+        GES_CCLOCK_FLAG of ." anti-clockwise" cr lcd-clear 0 0 lcd-set-cursor lcd-print then
+        else 44 1 paj7620-read-reg data1 ! data1 @ GES_WAVE_FLAG = if
+          ." Wave" cr lcd-clear 0 0 lcd-set-cursor lcd-print then endcase
+    then
+    100 delay
+  again ;
+
+\ Start the program
+setup
+begin
+  loop
+again
+```
+
+This version of the code is more concise and fixes some of the errors present in the previous version. 
+However, please note that the code assumes you have the necessary Forth environment and hardware connections. 
+You may need to adjust the code based on your specific Forth system and hardware setup.
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Here's a sudo code version of the code with comments explaining each step:
+
+```plaintext
+# LCD I2C Address
+lcd-address = 0x27
+
+# LCD Functions
+function lcd-init():
+  # Initialize LCD
+  Set LCD address to lcd-address
+  Set LCD mode to 0 (16x2)
+
+function lcd-backlight():
+  # Turn on LCD backlight
+  Set LCD address to lcd-address OR 0x08
+
+function lcd-clear():
+  # Clear LCD screen
+  Set LCD address to lcd-address AND 0x00 OR 0x01
+
+function lcd-set-cursor(row, col):
+  # Set LCD cursor position
+  Set LCD address to lcd-address AND 0x80 OR (row * 128 + col)
+
+function lcd-print(string):
+  # Print string on LCD screen
+  Set LCD address to lcd-address AND 0x00 OR string
+
+# PAJ7620 Constants
+GES_RIGHT_FLAG = 1
+GES_LEFT_FLAG = 2
+GES_UP_FLAG = 3
+GES_DOWN_FLAG = 4
+GES_FORWARD_FLAG = 5
+GES_BACKWARD_FLAG = 6
+GES_CLOCKWISE_FLAG = 7
+GES_CCLOCK_FLAG = 8
+GES_WAVE_FLAG = 9
+
+# PAJ7620 Functions
+function paj7620-init():
+  # Initialize PAJ7620 sensor
+  Return 0 (no error)
+
+function paj7620-read-reg(reg#):
+  # Read register value from PAJ7620 sensor
+  Return 0 (value) and 0 (no error)
+
+# Delay Function
+function delay(ms):
+  # Delay for specified milliseconds
+  Delay for ms milliseconds
+
+# Main Program
+function setup():
+  # Initialize LCD and PAJ7620
+  lcd-init()
+  lcd-backlight()
+  Print "PAJ7620U2 TEST DEMO: Recognize 9 gestures" on LCD screen
+  lcd-set-cursor(0, 0)
+  Print "    Gesture    " on LCD screen
+  lcd-set-cursor(0, 1)
+  Print "  Recognition  " on LCD screen
+  Delay for 4000 milliseconds
+  If paj7620-init() returns an error:
+    Print "INIT ERROR, CODE: " followed by the error code on LCD screen
+    Delay for 3000 milliseconds
+  Else:
+    Print "INIT OK" on LCD screen
+    Delay for 3000 milliseconds
+  Print "Please input your gestures:" on LCD screen
+  lcd-clear()
+  lcd-set-cursor(0, 0)
+  Print "Input Your" on LCD screen
+  lcd-set-cursor(0, 1)
+  Print "Gestures" on LCD screen
+  Delay for 3000 milliseconds
+
+function loop():
+  # Main loop for gesture recognition
+  data = 0
+  data1 = 0
+  error = 0
+
+  loop indefinitely:
+    Read gesture result into data from PAJ7620 sensor
+    If there is no error:
+      Switch (data):
+        Case GES_RIGHT_FLAG:
+          Read gesture result again into data from PAJ7620 sensor
+          If data is GES_FORWARD_FLAG:
+            Print "Forward" on LCD screen
+            Delay for GES_QUIT_TIME milliseconds
+          Else if data is GES_BACKWARD_FLAG:
+            Print "Backward" on LCD screen
+            Delay for GES_QUIT_TIME milliseconds
+          Else:
+            Print "Right" on LCD screen
+          End case
+        Case GES_LEFT_FLAG:
+          Read gesture result again into data from PAJ7620 sensor
+          If data is GES_FORWARD_FLAG:
+            Print "Forward" on LCD screen
+           
+
+ Delay for GES_QUIT_TIME milliseconds
+          Else if data is GES_BACKWARD_FLAG:
+            Print "Backward" on LCD screen
+            Delay for GES_QUIT_TIME milliseconds
+          Else:
+            Print "Left" on LCD screen
+          End case
+        Case GES_UP_FLAG:
+          Read gesture result again into data from PAJ7620 sensor
+          If data is GES_FORWARD_FLAG:
+            Print "Forward" on LCD screen
+            Delay for GES_QUIT_TIME milliseconds
+          Else if data is GES_BACKWARD_FLAG:
+            Print "Backward" on LCD screen
+            Delay for GES_QUIT_TIME milliseconds
+          Else:
+            Print "Up" on LCD screen
+          End case
+        Case GES_DOWN_FLAG:
+          Read gesture result again into data from PAJ7620 sensor
+          If data is GES_FORWARD_FLAG:
+            Print "Forward" on LCD screen
+            Delay for GES_QUIT_TIME milliseconds
+          Else if data is GES_BACKWARD_FLAG:
+            Print "Backward" on LCD screen
+            Delay for GES_QUIT_TIME milliseconds
+          Else:
+            Print "Down" on LCD screen
+          End case
+        Case GES_FORWARD_FLAG:
+          Print "Forward" on LCD screen
+          Delay for GES_QUIT_TIME milliseconds
+          End case
+        Case GES_BACKWARD_FLAG:
+          Print "Backward" on LCD screen
+          Delay for GES_QUIT_TIME milliseconds
+          End case
+        Case GES_CLOCKWISE_FLAG:
+          Print "Clockwise" on LCD screen
+          End case
+        Case GES_CCLOCK_FLAG:
+          Print "anti-clockwise" on LCD screen
+          End case
+        Default:
+          Read data1 from PAJ7620 sensor
+          If data1 is GES_WAVE_FLAG:
+            Print "Wave" on LCD screen
+          End case
+      End switch
+    Delay for 100 milliseconds
+```
+
+This sudo code provides an overview of the code's functionality and flow. 
+Note that the exact implementation may vary depending on the programming language or environment you are using.
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
