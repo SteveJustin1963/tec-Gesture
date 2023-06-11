@@ -104,7 +104,9 @@ Note that the code assumes that you have already obtained and included the `paj7
 
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-To convert the provided Arduino code to Forth without using libraries and using integer logic, you'll need to implement the necessary functions and definitions yourself. Here's an example of how you can translate the code:
+To convert the provided Arduino code to Forth without using libraries and using integer logic, 
+you'll need to implement the necessary functions and definitions yourself. 
+Here's an example of how you can translate the code:
 
 ```forth
 \ LCD I2C Address
