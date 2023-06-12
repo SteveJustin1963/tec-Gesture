@@ -1,5 +1,5 @@
 # tec-Gesture
-Hand Gesture Recognition Utilizing the PAJ7620 Sensor
+Hand Gesture Recognition Utilizing the PAJ7620 Sensor, connected thru i2c.
 
 
 
