@@ -83,7 +83,7 @@ main_loop()
 
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-The code you provided is an example of how to use the PAJ7620 gesture recognition sensor with an Arduino and an LCD display. Here's a breakdown of how the code works:
+ example of how to use the PAJ7620 gesture recognition sensor with an Arduino and an LCD display. Here's a breakdown of how the code works:
 
 1. The necessary libraries, including Wire.h, paj7620.h, and LiquidCrystal_I2C.h, are included at the beginning of the code.
 2. The LCD display is initialized with the appropriate settings.
@@ -365,7 +365,7 @@ You may need to adjust the code based on your specific Forth system and hardware
 
 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-Here's a shorter version of the Forth code that addresses the errors and simplifies the implementation:
+Here's a shorter version of the Forth code  - simplifies the implementation:
 
 ```forth
 \ LCD I2C Address
@@ -502,10 +502,10 @@ again
 ```
 
 This version of the code is more concise and fixes some of the errors present in the previous version. 
-However, please note that the code assumes you have the necessary Forth environment and hardware connections. 
+However, note that the code assumes you have the necessary Forth environment and hardware connections. 
 You may need to adjust the code based on your specific Forth system and hardware setup.
 
-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+/////////////////////////////////////////////////////////
 
 Here's a sudo code version of the code with comments explaining each step:
 
